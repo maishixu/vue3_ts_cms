@@ -4,7 +4,7 @@
       active-text-color="#ffd04b"
       background-color="#545c64"
       :collapse="isFold"
-      default-active="39"
+      :default-active="defaultActive"
       text-color="#fff"
     >
       <el-sub-menu
@@ -33,7 +33,9 @@
 
 <script setup lang="ts">
 import { localCache } from '@/utils/cache';
-import { useRouter } from 'vue-router';
+import { mapPathToMenu } from '@/utils/map-route';
+import { computed } from 'vue';
+import { useRoute, useRouter, type Router } from 'vue-router';
 // 1.接受参数：是否折叠
 defineProps({
   isFold: {
@@ -46,6 +48,12 @@ const router = useRouter();
 function changeRoute(item: any) {
   router.push(item.url);
 }
+// 3.根据路径切换当前侧边栏子菜单
+const route = useRoute();
+const defaultActive = computed(() => {
+  const defaultMenu = mapPathToMenu(route.path, localCache.getCache('userMenu'));
+  return defaultMenu.id + '';
+});
 </script>
 
 <style lang="less" scoped>

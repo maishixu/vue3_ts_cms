@@ -3,7 +3,7 @@
     <el-icon size="22px" @click="isFoldAction">
       <component :is="isFold ? 'Fold' : 'Expand'"> </component>
     </el-icon>
-    <div>></div>
+    <HeaderCrumb></HeaderCrumb>
   </div>
   <HeaderInfo></HeaderInfo>
 </template>
@@ -11,6 +11,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import HeaderInfo from '@/components/main-header/HeaderInfo.vue';
+import HeaderCrumb from '@/components/main-header/HeaderCrumb.vue';
 const isFold = ref(false);
 const emit = defineEmits(['foldChange']);
 // 是否折叠侧边栏
@@ -23,6 +24,10 @@ function isFoldAction() {
 <style lang="less" header>
 .content {
   display: flex;
+  align-items: center;
+}
+.el-icon {
+  margin-right: 20px;
 }
 .el-icon:hover {
   cursor: pointer;

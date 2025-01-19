@@ -1,5 +1,7 @@
 import router from '@/router/index';
-
+import { useRoute } from 'vue-router';
+const route = useRoute();
+// 存储所有路由
 const localRouter = [
   // 系统总览
   {
@@ -47,6 +49,9 @@ const localRouter = [
     component: () => import('@/views/main/story/List.vue'),
   },
 ];
+// 存储第一个子菜单
+export let firstMenu: any = undefined;
+
 export function mapRoute(userMenu: any) {
   // * 映射前先删除当前的/main路径下所有路由
   router.getRoutes().forEach((route) => {
@@ -58,12 +63,36 @@ export function mapRoute(userMenu: any) {
     }
   });
   for (const item of userMenu) {
+    // 0. 为根菜单路径匹配首个子菜单路由
+    if (!router.getRoutes().find((eRoute) => eRoute.path === item.url)) {
+      router.addRoute('main', { path: item.url, redirect: item.children[0].url });
+    }
     for (const subItem of item.children) {
-      // 找到菜单匹配的路由
-      const route = localRouter.find((iRoute) => iRoute.path === subItem.url);
-      if (route) {
-        router.addRoute('main', route);
+      // 1. 找到菜单匹配的路由
+      const routeItem = localRouter.find((iRoute) => iRoute.path === subItem.url);
+      if (routeItem) {
+        router.addRoute('main', routeItem);
       }
+      // 2. 找到第一个子菜单
+      if (!firstMenu && subItem) {
+        firstMenu = subItem;
+      }
+    }
+  }
+}
+// 3. 找到当前路径的子菜单
+export function mapPathToMenu(path: string, userMenu: any) {
+  for (const item of userMenu) {
+    for (const subItem of item.children) {
+      if (subItem.url === path) return subItem;
+    }
+  }
+}
+// 4. 找到当前路径的菜单/子菜单
+export function mapPathToFullMenu(path: string, userMenu: any) {
+  for (const item of userMenu) {
+    for (const subItem of item.children) {
+      if (subItem.url === path) return [item, subItem];
     }
   }
 }

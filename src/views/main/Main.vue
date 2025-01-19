@@ -42,7 +42,7 @@ function handleFoldChange(flag: boolean) {
     transition: width 0.2s ease;
   }
   .el-header {
-    background-color: white;
+    background-color: rgb(242, 241, 241);
     display: flex;
     align-items: center;
     justify-content: space-between;

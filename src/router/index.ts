@@ -1,5 +1,6 @@
 import { LOGIN_TOKEN } from '@/global/constants';
 import { localCache } from '@/utils/cache';
+import { firstMenu } from '@/utils/map-route';
 import { createRouter, createWebHashHistory } from 'vue-router';
 const router = createRouter({
   history: createWebHashHistory(),
@@ -31,8 +32,13 @@ const router = createRouter({
 // 2.路由导航守卫
 router.beforeEach((to) => {
   const token = localCache.getCache(LOGIN_TOKEN);
+  // *进入主要界面的权限校验
   if (to.path.startsWith('/main') && !token) {
     return '/login';
+  }
+  // *默认的主要页面导航
+  if (to.path === '/main') {
+    router.push(firstMenu.url);
   }
 });
 
