@@ -3,7 +3,7 @@ import { localCache } from '@/utils/cache';
 import { createRouter, createWebHashHistory } from 'vue-router';
 const router = createRouter({
   history: createWebHashHistory(),
-  // 路由映射关系
+  // 1.路由映射关系
   routes: [
     // 默认导航
     {
@@ -17,6 +17,7 @@ const router = createRouter({
     },
     {
       path: '/main',
+      name: 'main',
       component: () => import('../views/main/Main.vue'),
     },
     // 幽灵导航（不存在）
@@ -27,11 +28,12 @@ const router = createRouter({
     },
   ],
 });
-// 路由导航守卫
+// 2.路由导航守卫
 router.beforeEach((to) => {
   const token = localCache.getCache(LOGIN_TOKEN);
-  if (to.path == '/main' && !token) {
+  if (to.path.startsWith('/main') && !token) {
     return '/login';
   }
 });
+
 export default router;

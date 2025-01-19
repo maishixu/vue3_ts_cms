@@ -8,9 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ElAside: typeof import('element-plus/es')['ElAside']
+    ElAvatar: typeof import('element-plus/es')['ElAvatar']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCheckbox: typeof import('element-plus/es')['ElCheckbox']
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDropdown: typeof import('element-plus/es')['ElDropdown']
+    ElDropdownItem: typeof import('element-plus/es')['ElDropdownItem']
+    ElDropdownMenu: typeof import('element-plus/es')['ElDropdownMenu']
     ElForm: typeof import('element-plus/es')['ElForm']
     ElFormItem: typeof import('element-plus/es')['ElFormItem']
     ElHeader: typeof import('element-plus/es')['ElHeader']
@@ -24,8 +28,11 @@ declare module 'vue' {
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
     ElTabPane: typeof import('element-plus/es')['ElTabPane']
     ElTabs: typeof import('element-plus/es')['ElTabs']
-    NavHeader: typeof import('./src/components/nav-header/NavHeader.vue')['default']
-    NavMain: typeof import('./src/components/nav-main/NavMain.vue')['default']
+    HeaderInfo: typeof import('./src/components/main-header/HeaderInfo.vue')['default']
+    MainHeader: typeof import('./src/components/main-header/MainHeader.vue')['default']
+    MainHeaderInfo: typeof import('./src/components/main-header/MainHeaderInfo.vue')['default']
+    NavHeader: typeof import('./src/components/main-nav/NavHeader.vue')['default']
+    NavMain: typeof import('./src/components/main-nav/NavMain.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }
