@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <el-icon size="22px" @click="isFoldAction">
+    <el-icon size="22px" @click="isFoldAction" class="fold">
       <component :is="isFold ? 'Fold' : 'Expand'"> </component>
     </el-icon>
     <HeaderCrumb></HeaderCrumb>
@@ -26,7 +26,7 @@ function isFoldAction() {
   display: flex;
   align-items: center;
 }
-.el-icon {
+.fold {
   margin-right: 20px;
 }
 .el-icon:hover {

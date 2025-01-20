@@ -67,7 +67,7 @@ const defaultActive = computed(() => {
   }
 }
 .el-menu-item {
-  padding-left: 55px !important;
+  padding-left: 56px !important;
   color: rgb(230, 228, 228) !important;
   background-color: hsl(208, 9%, 40%);
   height: 45px;

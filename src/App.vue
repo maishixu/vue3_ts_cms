@@ -1,11 +1,13 @@
-<script setup lang="ts"></script>
-
 <template>
   <div class="app">
-    <router-view></router-view>
+    <el-config-provider :locale="zhCn">
+      <router-view></router-view>
+    </el-config-provider>
   </div>
 </template>
-
+<script setup lang="ts">
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
+</script>
 <style lang="less" scoped>
 .app {
   /* 占满视口 */

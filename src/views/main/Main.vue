@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <el-container class="">
+    <el-container class="common-layout">
       <!-- 侧边导航 -->
       <el-aside :width="isFold ? '56px' : '210px'">
         <NavHeader :isFold="isFold"></NavHeader>
@@ -13,7 +13,7 @@
           <MainHeader @foldChange="handleFoldChange"></MainHeader>
         </el-header>
         <!-- 内容 -->
-        <router-view></router-view>
+        <el-main><router-view></router-view></el-main>
       </el-container>
     </el-container>
   </div>
@@ -42,13 +42,15 @@ function handleFoldChange(flag: boolean) {
     transition: width 0.2s ease;
   }
   .el-header {
-    background-color: rgb(242, 241, 241);
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
   }
   .el-main {
-    background-color: rgb(215, 238, 181);
+    padding-top: 8px;
+    // padding-left: 15px;
+    background-color: rgb(247, 247, 247);
   }
 }
 </style>
