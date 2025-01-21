@@ -5,6 +5,7 @@ import { localCache } from '@/utils/cache';
 import { mapRoute } from '@/utils/map-route';
 import router from '@/router';
 import { LOGIN_TOKEN } from '@/global/constants';
+import { useMainStore } from '../main/mian';
 
 interface ILoginState {
   token: string;
@@ -43,6 +44,11 @@ const useLoginStore = defineStore('login', {
 
       // 6.跳转到主要页面
       router.push('/main');
+
+      // 7.获取角色/部门列表
+      const mainStore = useMainStore();
+      await mainStore.postRoleListAction();
+      await mainStore.postDepartmentListAction();
     },
     // **根据用户菜单的路由映射
     loadUserMenu() {

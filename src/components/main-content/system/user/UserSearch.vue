@@ -21,7 +21,6 @@
           <el-form-item label="真实姓名" prop="realname">
             <el-input
               v-model="formData.realname"
-              type="password"
               autocomplete="off"
               placeholder="请输入真实姓名"
             /> </el-form-item
@@ -60,23 +59,26 @@
 
 <script setup lang="ts">
 import type { ElForm } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { reactive, ref, defineEmits } from 'vue';
 // 存储表单数据
 const formData = reactive<any>({
   name: '',
   realname: '',
   cellphone: '',
-  enable: 1,
-  createAt: [],
+  enable: '',
+  createAt: '',
 });
+// *与父组件通信
+const emit = defineEmits(['resetClick', 'searchClick']);
 // 重置功能
 const formRef = ref<InstanceType<typeof ElForm>>();
 function handleResetClick() {
   formRef.value?.resetFields();
+  emit('resetClick');
 }
 // 查询功能
 function handleSearchClick() {
-  console.log('查询');
+  emit('searchClick', formData);
 }
 </script>
 

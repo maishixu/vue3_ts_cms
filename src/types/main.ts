@@ -9,6 +9,10 @@ interface userList {
   createAt: string;
   updateAt: string;
 }
+export interface IMain {
+  roleList: any[];
+  departmentList: any[];
+}
 export interface ISystem {
   userList: userList[];
   userCount: number;
