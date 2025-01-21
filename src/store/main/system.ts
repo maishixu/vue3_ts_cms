@@ -1,4 +1,13 @@
-import { createUser, deleteUserData, editUserData, postUserListData } from '@/service/main/system';
+import {
+  createPageData,
+  createUser,
+  deletePageData,
+  deleteUserData,
+  editPageData,
+  editUserData,
+  postPageListData,
+  postUserListData,
+} from '@/service/main/system';
 import type { ISystem } from '@/types/main';
 import { defineStore } from 'pinia';
 
@@ -6,9 +15,12 @@ export const useSystemStore = defineStore('system', {
   state: (): ISystem => ({
     userList: [],
     userCount: 0,
+
+    departmentList: [],
+    departmentCount: 0,
   }),
   actions: {
-    // 1.获取用户列表
+    // 1.查询用户
     async postUserListAction(postData: any) {
       const userData = await postUserListData(postData);
       this.userList = userData.data.list;
@@ -34,6 +46,29 @@ export const useSystemStore = defineStore('system', {
       await editUserData(id, formData);
       // * 重新请求数据
       this.postUserListAction({ offset: 0, size: 20 });
+    },
+
+    /* 封装：增删改查 */
+    // 1.查
+    async postPageListAction(pageName: string, postData: any) {
+      const departmentData = await postPageListData(pageName, postData);
+      this.departmentList = departmentData.data.list;
+      this.departmentCount = departmentData.data.totalCount;
+    },
+    // 2.删
+    async deletePageDataAction(pageName: string, id: number) {
+      await deletePageData(pageName, id); // * 删除请求
+      this.postPageListAction(pageName, { offset: 0, size: 20 }); // * 重新请求数据
+    },
+    // 3.增
+    async createPageDataAction(pageName: string, formData: any) {
+      await createPageData(pageName, formData);
+      this.postPageListAction(pageName, { offset: 0, size: 20 });
+    },
+    // 4.改
+    async editPageDataAction(pageName: string, id: number, formData: any) {
+      await editPageData(pageName, id, formData);
+      this.postPageListAction(pageName, { offset: 0, size: 20 });
     },
   },
 });

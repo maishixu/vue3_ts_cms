@@ -39,7 +39,7 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="isDialogVisible = false">取消</el-button>
+          <el-button @click="handleCancelClick">取消</el-button>
           <el-button type="primary" @click="handleConfirmClick"> 确认 </el-button>
         </div>
       </template>
@@ -57,9 +57,10 @@ import { reactive, ref } from 'vue';
 const isDialogVisible = ref(false);
 const isEdit = ref(false);
 const userId = ref();
+
 function changeIsDialogVisible(userData?: any) {
   isDialogVisible.value = true;
-  console.log(userData);
+
   if (userData) {
     isEdit.value = true;
     userId.value = userData.id;
@@ -71,7 +72,7 @@ function changeIsDialogVisible(userData?: any) {
   }
 }
 // 2.表单数据
-const formData = reactive<any>({
+let formData = reactive<any>({
   name: '',
   realname: '',
   password: '',
@@ -79,28 +80,33 @@ const formData = reactive<any>({
   roleId: '',
   departmentId: '',
 });
+
 // 3.获取角色/部门列表
 const mainStore = useMainStore();
 const { roleList, departmentList } = storeToRefs(mainStore);
 console.log(roleList, departmentList);
+
 // 4.新建和修改用户
 const formRef = ref<InstanceType<typeof ElForm>>();
 const systemStore = useSystemStore();
 function handleConfirmClick() {
   isDialogVisible.value = false;
   if (!isEdit.value) {
-    // * 新建请求
+    // * 新建
     systemStore.createUserAction(formData);
-    // * 清空表单
     formRef.value?.resetFields();
   } else {
-    // * 修改请求
+    // * 修改
     systemStore.editUserAction(userId.value, formData);
-    // * 清空表单
     formRef.value?.resetFields();
   }
 }
 
+// 5.取消按钮逻辑
+function handleCancelClick() {
+  isDialogVisible.value = false;
+  formRef.value?.resetFields();
+}
 // ** 暴露属性和方法 **
 defineExpose({
   changeIsDialogVisible,

@@ -16,4 +16,7 @@ export interface IMain {
 export interface ISystem {
   userList: userList[];
   userCount: number;
+
+  departmentList: any[];
+  departmentCount: number;
 }

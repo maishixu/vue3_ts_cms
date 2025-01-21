@@ -10,32 +10,19 @@
     >
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-form-item label="用户名" prop="name">
+          <el-form-item label="部门名称" prop="name">
+            <el-input placeholder="请输入查询的部门名称" v-model="formData.name" />
+          </el-form-item>
+        </el-col>
+        <el-col :span="8">
+          <el-form-item label="部门领导" prop="leader">
             <el-input
+              v-model="formData.leader"
               autocomplete="off"
-              placeholder="请输入查询的用户名"
-              v-model="formData.name"
-            /> </el-form-item
-        ></el-col>
-        <el-col :span="8">
-          <el-form-item label="真实姓名" prop="realname">
-            <el-input
-              v-model="formData.realname"
-              autocomplete="off"
-              placeholder="请输入真实姓名"
-            /> </el-form-item
-        ></el-col>
-        <el-col :span="8">
-          <el-form-item label="电话号码" prop="cellphone">
-            <el-input v-model="formData.cellphone" placeholder="请输入电话号码" /> </el-form-item
-        ></el-col>
-        <el-col :span="8">
-          <el-form-item label="状态" prop="enable">
-            <el-select v-model="formData.enable" placeholder="请选择状态">
-              <el-option label="启用" :value="1" />
-              <el-option label="禁用" :value="0" />
-            </el-select> </el-form-item
-        ></el-col>
+              placeholder="请输入查询的部门领导"
+            />
+          </el-form-item>
+        </el-col>
         <el-col :span="8">
           <el-form-item prop="createAt" label="创建时间">
             <el-date-picker
@@ -44,9 +31,12 @@
               range-separator="-"
               start-placeholder="开始时间"
               end-placeholder="结束时间"
-          /></el-form-item>
+            />
+          </el-form-item>
         </el-col>
-        <el-col :span="8" class="col-btns">
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="23" class="col-btns" style="display: flex; justify-content: flex-end">
           <div class="btns">
             <el-button icon="Refresh" @click="handleResetClick">重置</el-button>
             <el-button icon="Search" @click="handleSearchClick" type="primary">查询</el-button>
@@ -63,9 +53,8 @@ import { reactive, ref, defineEmits } from 'vue';
 // 存储表单数据
 const formData = reactive<any>({
   name: '',
-  realname: '',
-  cellphone: '',
-  enable: '',
+  leader: '',
+  parentId: '',
   createAt: '',
 });
 // *与父组件通信
@@ -97,7 +86,7 @@ function handleSearchClick() {
   }
 }
 .col-btns {
-  margin-top: 8px;
+  margin: 8px 0;
   .btns {
     margin-left: 10px;
   }
