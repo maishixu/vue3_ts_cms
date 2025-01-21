@@ -1,6 +1,10 @@
 <template>
   <div class="department">
-    <PageSearch @search-click="handleSearchClick" @reset-click="handleResetClick"></PageSearch>
+    <PageSearch
+      @search-click="handleSearchClick"
+      @reset-click="handleResetClick"
+      :searchConfig="searchConfig"
+    ></PageSearch>
     <PageContent
       @add-data-click="handleAddClick"
       @edit-data-click="handleEditClick"
@@ -11,10 +15,11 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import PageSearch from '@/components/main-content/system/department/PageSearch.vue';
 import PageContent from '@/components/main-content/system/department/PageContent.vue';
 import PageModal from '@/components/main-content/system/department/PageModal.vue';
-import { ref } from 'vue';
+import searchConfig from '@/components/main-content/system/department/config/search.config';
 // 1.查询
 const contentRef = ref<InstanceType<typeof PageContent>>();
 function handleSearchClick(formData: any) {

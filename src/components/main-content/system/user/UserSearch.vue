@@ -99,7 +99,7 @@ function handleSearchClick() {
 .col-btns {
   margin-top: 8px;
   .btns {
-    margin-left: 10px;
+    margin-left: 105px;
   }
   .el-button {
     height: 35px;
