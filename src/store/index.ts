@@ -1,7 +1,7 @@
 import { createPinia } from 'pinia';
 import useLoginStore from './login/login';
 import type { App } from 'vue';
-import { useMainStore } from './main/mian';
+import { useMainStore } from './main/main';
 async function store(app: App<Element>) {
   // 安装pinia
   const pinia = createPinia();

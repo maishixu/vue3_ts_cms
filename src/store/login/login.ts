@@ -5,7 +5,7 @@ import { localCache } from '@/utils/cache';
 import { mapRoute } from '@/utils/map-route';
 import router from '@/router';
 import { LOGIN_TOKEN } from '@/global/constants';
-import { useMainStore } from '../main/mian';
+import { useMainStore } from '../main/main';
 
 interface ILoginState {
   token: string;

@@ -124,7 +124,7 @@ interface IProps {
   };
 }
 const props = defineProps<IProps>();
-// 1.获取页面数据
+// 2.获取页面数据
 const systemStore = useSystemStore();
 const { pageList, pageCount } = storeToRefs(systemStore); // 把userList做成响应式的，使异步请求的结果变化也能及时更新页面
 // * 根据用户选择构造请求参数
@@ -145,7 +145,7 @@ function handleCurrentChange() {
   systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
 
-// 2.查询操作
+// 3.查询操作
 function handleSearch(formData: any) {
   currentPage.value = 1;
   const computedParams = {
@@ -155,21 +155,21 @@ function handleSearch(formData: any) {
   systemStore.postPageListAction(props.contentConfig.pageName, computedParams);
 }
 
-// 3.重置
+// 4.重置
 function handleReset() {
   currentPage.value = 1;
   systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
-// 4.删除
+// 5.删除
 function deleteClick(id: number) {
   systemStore.deletePageDataAction(props.contentConfig.pageName, id);
 }
-// 5.新建
+// 6.新建
 const emit = defineEmits(['addDataClick', 'editDataClick']);
 function handleAddDataClick() {
   emit('addDataClick');
 }
-// 6.编辑
+// 7.编辑
 function handleEditClick(rowData: any) {
   emit('editDataClick', rowData);
 }

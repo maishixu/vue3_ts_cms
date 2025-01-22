@@ -13,17 +13,37 @@
     >
       <template #testLeader="scope">*{{ scope.row[scope.prop] }}*</template>
     </PageContent>
-    <PageModal ref="modalRef"></PageModal>
+    <PageModal :modalConfig="modalConfigRef" ref="modalRef"></PageModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+
 import PageSearch from '@/components/main-content/system/department/PageSearch.vue';
 import PageContent from '@/components/main-content/system/department/PageContent.vue';
 import PageModal from '@/components/main-content/system/department/PageModal.vue';
+
 import searchConfig from '@/components/main-content/system/department/config/search.config';
 import contentConfig from '@/components/main-content/system/department/config/content.config';
+import modalConfig from '@/components/main-content/system/department/config/modal.config';
+
+import { useMainStore } from '@/store/main/main';
+
+// 0.获取数据
+
+const modalConfigRef = computed(() => {
+  const mainStore = useMainStore();
+  const departmentList = mainStore.departmentList.map((item) => {
+    return { label: item.name, value: item.id };
+  });
+  modalConfig.formItems.forEach((item) => {
+    if (item.prop === 'parentId') {
+      item.options?.push(...departmentList);
+    }
+  });
+  return modalConfig;
+});
 // 1.查询
 const contentRef = ref<InstanceType<typeof PageContent>>();
 function handleSearchClick(formData: any) {

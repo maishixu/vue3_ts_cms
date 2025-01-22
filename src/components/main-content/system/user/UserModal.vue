@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { useMainStore } from '@/store/main/mian';
+import { useMainStore } from '@/store/main/main';
 import { useSystemStore } from '@/store/main/system';
 import type { ElForm } from 'element-plus';
 import { storeToRefs } from 'pinia';
@@ -84,7 +84,6 @@ let formData = reactive<any>({
 // 3.获取角色/部门列表
 const mainStore = useMainStore();
 const { roleList, departmentList } = storeToRefs(mainStore);
-console.log(roleList, departmentList);
 
 // 4.新建和修改用户
 const formRef = ref<InstanceType<typeof ElForm>>();
