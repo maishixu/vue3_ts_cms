@@ -1,20 +1,66 @@
 <template>
-  <div class="user-content">
+  <div class="page-content">
     <div class="head">
-      <h3 class="title">部门列表</h3>
+      <h3 class="title">{{ props.contentConfig.header.title }}</h3>
       <el-button type="primary" plain class="create-btn" @click="handleAddDataClick"
-        >创建部门
+        >{{ props.contentConfig.header.btnTitle }}
       </el-button>
     </div>
     <hr />
-    <div class="userList">
-      <el-table :data="departmentList" border style="width: 100%">
-        <el-table-column type="index" label="序号" width="55" align="center" />
+    <div class="pageList">
+      <el-table :data="pageList" border style="width: 100%">
+        <template v-for="item in props.contentConfig.formItems">
+          <!-- 1.普通列 -->
+          <template v-if="item.type === 'normal' || item.type === 'index'">
+            <el-table-column v-bind="item" align="center" />
+          </template>
+          <!-- 2.时间列 -->
+          <template v-if="item.type === 'timer'">
+            <el-table-column v-bind="item" align="center">
+              <template #default="scope">
+                {{ formatUTC(scope.row[item.prop]) }}
+              </template>
+            </el-table-column>
+          </template>
+          <!-- 3.操作列 -->
+          <template v-if="item.type === 'handler'">
+            <el-table-column v-bind="item" align="center">
+              <template #default="scope">
+                <el-button
+                  class="edit-delete-btn"
+                  icon="Edit"
+                  text
+                  type="primary"
+                  size="small"
+                  @click="handleEditClick(scope.row)"
+                  >编辑</el-button
+                >
+                <el-button
+                  class="edit-delete-btn"
+                  icon="Delete"
+                  text
+                  type="danger"
+                  size="small"
+                  @click="deleteClick(scope.row.id)"
+                  >删除</el-button
+                >
+              </template>
+            </el-table-column>
+          </template>
+          <!-- 4.自定义列 -->
+          <template v-if="item.type === 'custom'">
+            <el-table-column v-bind="item" align="center">
+              <template #default="scope">
+                <slot :name="item.slotName" v-bind="scope" :prop="item.prop"></slot>
+              </template>
+            </el-table-column>
+          </template>
+        </template>
+        <!-- <el-table-column type="index" label="序号" width="55" align="center" />
         <el-table-column prop="name" label="部门名称" width="120" align="center" />
         <el-table-column prop="leader" label="部门领导" width="120" align="center" />
-        <el-table-column prop="parentId" label="上级部门" width="120" align="center" />
-        <el-table-column prop="createAt" label="创建时间" align="center">
-          <!-- 时间作用域插槽 -->
+        <el-table-column prop="parentId" label="上级部门" width="120" align="center" /> -->
+        <!-- <el-table-column prop="createAt" label="创建时间" align="center">
           <template #default="scope">
             {{ formatUTC(scope.row.createAt) }}
           </template>
@@ -23,8 +69,8 @@
           <template #default="scope">
             {{ formatUTC(scope.row.updateAt) }}
           </template>
-        </el-table-column>
-        <el-table-column label="操作" width="135" align="center">
+        </el-table-column> -->
+        <!-- <el-table-column label="操作" width="135" align="center">
           <template #default="scope">
             <el-button
               class="edit-delete-btn"
@@ -45,7 +91,7 @@
               >删除</el-button
             >
           </template>
-        </el-table-column>
+        </el-table-column> -->
       </el-table>
     </div>
     <hr style="margin-top: 10px" />
@@ -56,7 +102,7 @@
         :page-sizes="[10, 20]"
         size="small"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="departmentCount"
+        :total="pageCount"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
       />
@@ -69,10 +115,18 @@ import { useSystemStore } from '@/store/main/system';
 import { formatUTC } from '@/utils/format';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
-
-// 1.获取list数据
+// 1.接收父组件数据
+interface IProps {
+  contentConfig: {
+    header: any;
+    formItems: any[];
+    pageName: string;
+  };
+}
+const props = defineProps<IProps>();
+// 1.获取页面数据
 const systemStore = useSystemStore();
-const { departmentList, departmentCount } = storeToRefs(systemStore); // 把userList做成响应式的，使异步请求的结果变化也能及时更新页面
+const { pageList, pageCount } = storeToRefs(systemStore); // 把userList做成响应式的，使异步请求的结果变化也能及时更新页面
 // * 根据用户选择构造请求参数
 const currentPage = ref(1);
 const pageSize = ref(20);
@@ -81,14 +135,14 @@ const postData: any = computed(() => ({
   size: pageSize.value,
 }));
 // * 首次请求
-systemStore.postPageListAction('department', postData.value);
+systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 // * 数量变化时发送请求
 function handleSizeChange() {
-  systemStore.postPageListAction('department', postData.value);
+  systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
 // * 页面变化时发送请求
 function handleCurrentChange() {
-  systemStore.postPageListAction('department', postData.value);
+  systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
 
 // 2.查询操作
@@ -98,17 +152,17 @@ function handleSearch(formData: any) {
     ...formData,
     ...postData.value,
   };
-  systemStore.postPageListAction('department', computedParams);
+  systemStore.postPageListAction(props.contentConfig.pageName, computedParams);
 }
 
 // 3.重置
 function handleReset() {
   currentPage.value = 1;
-  systemStore.postPageListAction('department', postData.value);
+  systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
 // 4.删除
 function deleteClick(id: number) {
-  systemStore.deletePageDataAction('department', id);
+  systemStore.deletePageDataAction(props.contentConfig.pageName, id);
 }
 // 5.新建
 const emit = defineEmits(['addDataClick', 'editDataClick']);
@@ -127,7 +181,7 @@ defineExpose({
 </script>
 
 <style lang="less" scoped>
-.user-content {
+.page-content {
   background-color: white;
   margin-top: 8px;
   padding: 6px 10px;
@@ -146,7 +200,7 @@ defineExpose({
       margin-top: 2px;
     }
   }
-  .userList {
+  .pageList {
     margin-top: 10px;
   }
   .footer {

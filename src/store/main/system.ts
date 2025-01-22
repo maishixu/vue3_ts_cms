@@ -16,8 +16,8 @@ export const useSystemStore = defineStore('system', {
     userList: [],
     userCount: 0,
 
-    departmentList: [],
-    departmentCount: 0,
+    pageList: [],
+    pageCount: 0,
   }),
   actions: {
     // 1.查询用户
@@ -52,8 +52,8 @@ export const useSystemStore = defineStore('system', {
     // 1.查
     async postPageListAction(pageName: string, postData: any) {
       const departmentData = await postPageListData(pageName, postData);
-      this.departmentList = departmentData.data.list;
-      this.departmentCount = departmentData.data.totalCount;
+      this.pageList = departmentData.data.list;
+      this.pageCount = departmentData.data.totalCount;
     },
     // 2.删
     async deletePageDataAction(pageName: string, id: number) {

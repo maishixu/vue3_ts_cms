@@ -8,8 +8,11 @@
     <PageContent
       @add-data-click="handleAddClick"
       @edit-data-click="handleEditClick"
+      :contentConfig="contentConfig"
       ref="contentRef"
-    ></PageContent>
+    >
+      <template #testLeader="scope">*{{ scope.row[scope.prop] }}*</template>
+    </PageContent>
     <PageModal ref="modalRef"></PageModal>
   </div>
 </template>
@@ -20,6 +23,7 @@ import PageSearch from '@/components/main-content/system/department/PageSearch.v
 import PageContent from '@/components/main-content/system/department/PageContent.vue';
 import PageModal from '@/components/main-content/system/department/PageModal.vue';
 import searchConfig from '@/components/main-content/system/department/config/search.config';
+import contentConfig from '@/components/main-content/system/department/config/content.config';
 // 1.查询
 const contentRef = ref<InstanceType<typeof PageContent>>();
 function handleSearchClick(formData: any) {
