@@ -11,7 +11,6 @@
       :contentConfig="contentConfig"
       ref="contentRef"
     >
-      <template #testLeader="scope">*{{ scope.row[scope.prop] }}*</template>
     </PageContent>
     <PageModal :modalConfig="modalConfigRef" ref="modalRef"></PageModal>
   </div>
@@ -30,8 +29,7 @@ import modalConfig from '@/components/main-content/system/department/config/moda
 
 import { useMainStore } from '@/store/main/main';
 
-// 0.获取数据
-
+// 1.定义数据
 const modalConfigRef = computed(() => {
   const mainStore = useMainStore();
   const departmentList = mainStore.departmentList.map((item) => {
@@ -44,21 +42,21 @@ const modalConfigRef = computed(() => {
   });
   return modalConfig;
 });
-// 1.查询
+// 2.查询
 const contentRef = ref<InstanceType<typeof PageContent>>();
 function handleSearchClick(formData: any) {
   contentRef.value?.handleSearch(formData);
 }
-// 2.重置
+// 3.重置
 function handleResetClick() {
   contentRef.value?.handleReset();
 }
-// 3.新建
+// 4.新建
 const modalRef = ref<InstanceType<typeof PageModal>>();
 function handleAddClick() {
   modalRef.value?.changeIsDialogVisible();
 }
-// 4.编辑
+// 5.编辑
 function handleEditClick(userData: any) {
   modalRef.value?.changeIsDialogVisible(userData);
 }

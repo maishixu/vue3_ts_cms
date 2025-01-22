@@ -1,31 +1,26 @@
 const contentConfig = {
   header: {
-    title: '部门列表',
-    btnTitle: '新建部门',
+    title: '角色列表',
+    btnTitle: '新建角色',
   },
-  formItems: [
+  pageName: 'role',
+  dataList: [
     {
       type: 'index',
       label: '序号',
-      width: '60px',
+      width: '70px',
     },
     {
       type: 'normal',
       prop: 'name',
-      label: '部门名称',
-      width: '120px',
+      label: '角色名称',
+      width: '150px',
     },
     {
       type: 'normal',
-      prop: 'leader',
-      label: '部门名称',
-      width: '120px',
-    },
-    {
-      type: 'normal',
-      prop: 'parentId',
-      label: '上级部门',
-      width: '120px',
+      prop: 'intro',
+      label: '角色介绍',
+      width: '150px',
     },
     {
       type: 'timer',
@@ -40,9 +35,8 @@ const contentConfig = {
     {
       type: 'handler',
       label: '操作',
-      width: '140px',
+      width: '160px',
     },
   ],
-  pageName: 'department',
 };
 export default contentConfig;
