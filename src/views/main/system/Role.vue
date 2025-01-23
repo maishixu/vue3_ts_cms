@@ -11,7 +11,6 @@
       :contentConfig="contentConfig"
       ref="contentRef"
     >
-      <template #testLeader="scope">*{{ scope.row[scope.prop] }}*</template>
     </PageContent>
     <PageModal :modalConfig="modalConfig" ref="modalRef"></PageModal>
   </div>

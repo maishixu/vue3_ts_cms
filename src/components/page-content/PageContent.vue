@@ -2,19 +2,20 @@
   <div class="page-content">
     <div class="head">
       <h3 class="title">{{ props.contentConfig.header.title }}</h3>
-      <el-button type="primary" plain class="create-btn" @click="handleAddDataClick"
-        >{{ props.contentConfig.header.btnTitle }}
+      <el-button
+        v-show="props.contentConfig.header?.btnTitle"
+        type="primary"
+        plain
+        class="create-btn"
+        @click="handleAddDataClick"
+        >{{ props.contentConfig.header?.btnTitle }}
       </el-button>
     </div>
     <hr />
     <div class="pageList">
-      <el-table :data="pageList" border style="width: 100%">
+      <el-table :data="pageList" border style="width: 100%" row-key="id">
         <template v-for="item in props.contentConfig.dataList">
-          <!-- 1.普通列 -->
-          <template v-if="item.type === 'normal' || item.type === 'index'">
-            <el-table-column v-bind="item" align="center" />
-          </template>
-          <!-- 2.时间列 -->
+          <!-- 1.时间列 -->
           <template v-if="item.type === 'timer'">
             <el-table-column v-bind="item" align="center">
               <template #default="scope">
@@ -22,8 +23,8 @@
               </template>
             </el-table-column>
           </template>
-          <!-- 3.操作列 -->
-          <template v-if="item.type === 'handler'">
+          <!-- 2.操作列 -->
+          <template v-else-if="item.type === 'handler'">
             <el-table-column v-bind="item" align="center">
               <template #default="scope">
                 <el-button
@@ -47,13 +48,17 @@
               </template>
             </el-table-column>
           </template>
-          <!-- 4.自定义列 -->
-          <template v-if="item.type === 'custom'">
+          <!-- 3.自定义列 -->
+          <template v-else-if="item.type === 'custom'">
             <el-table-column v-bind="item" align="center">
               <template #default="scope">
                 <slot :name="item.slotName" v-bind="scope" :prop="item.prop"></slot>
               </template>
             </el-table-column>
+          </template>
+          <!-- 4.普通列 -->
+          <template v-else>
+            <el-table-column v-bind="item" align="center" />
           </template>
         </template>
       </el-table>

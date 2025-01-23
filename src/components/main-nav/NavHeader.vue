@@ -1,7 +1,7 @@
 <template>
   <div class="nav-header">
     <img src="@/assets/img/logo.svg" class="img" />
-    <h3 class="text" v-show="!isFold">MaxWell 管理系统</h3>
+    <h3 class="text" v-show="!isFold">MaXwell 管理系统</h3>
   </div>
 </template>
 
@@ -20,14 +20,14 @@ defineProps({
   display: flex;
   height: 54px;
   align-items: center;
-  // justify-content: center;
+  justify-content: center;
   padding-top: 12px;
   padding-bottom: 12px;
   color: white;
   .img {
+    margin-left: -5px;
+    margin-right: 4px;
     height: 90%;
-    padding-left: 15px;
-    margin-right: 5px;
   }
 }
 </style>
