@@ -27,7 +27,7 @@ const account = reactive<IAccount>({
 const accountRules: FormRules = {
   name: [
     { required: true, message: '账号不能为空！', trigger: 'blur' },
-    { pattern: /^[a-z0-9]{6,20}$/, message: '账号必须由6-20位的字母或数字组成', trigger: 'blur' },
+    { pattern: /^[a-z0-9]{3,20}$/, message: '账号必须由6-20位的字母或数字组成', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '密码不能位空！', trigger: 'blur' },

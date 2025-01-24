@@ -12,3 +12,9 @@ export function postRoleList() {
     url: '/role/list',
   });
 }
+// 2.获取菜单列表
+export function postMenuList() {
+  return myAxios.post({
+    url: '/menu/list',
+  });
+}

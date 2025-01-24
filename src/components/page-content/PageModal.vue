@@ -7,7 +7,7 @@
       center
     >
       <div class="form">
-        <el-form :model="formData" ref="formRef">
+        <el-form :model="formData">
           <template v-for="item in modalConfig.formItems" :key="item.prop">
             <el-form-item :label="item.label" :prop="item.prop">
               <!-- 1.文本输入 -->
@@ -36,21 +36,12 @@
                   </template>
                 </el-select>
               </template>
+              <!-- 4.自定义输入 -->
+              <template v-if="item.type === 'custom'">
+                <slot :name="item.slotName"></slot>
+              </template>
             </el-form-item>
           </template>
-          <!-- <el-form-item prop="name" label="部门名称">
-            <el-input v-model="formData.name" placeholder="请输入部门名称"></el-input>
-          </el-form-item>
-          <el-form-item prop="leader" label="部门领导">
-            <el-input v-model="formData.leader" placeholder="请输入部门领导"></el-input>
-          </el-form-item>
-          <el-form-item prop="parentId" label="上级部门">
-            <el-select placeholder="请选择上级部门" v-model="formData.parentId">
-              <template v-for="item in departmentList" :key="item.id">
-                <el-option :label="item.name" :value="item.id"></el-option>
-              </template>
-            </el-select>
-          </el-form-item> -->
         </el-form>
       </div>
 
@@ -67,7 +58,7 @@
 <script setup lang="ts">
 import { useSystemStore } from '@/store/main/system';
 import type { ElForm } from 'element-plus';
-import { reactive, ref } from 'vue';
+import { computed, reactive, ref, toRaw } from 'vue';
 // 1.接收数据
 interface IProps {
   modalConfig: {
@@ -78,6 +69,7 @@ interface IProps {
     };
     formItems: any[];
   };
+  menuData?: any;
 }
 const props = defineProps<IProps>();
 
@@ -86,7 +78,7 @@ const initialFormData: any = {};
 for (const item of props.modalConfig.formItems) {
   initialFormData[item.prop] = '';
 }
-const formData = reactive<any>(initialFormData);
+let formData = reactive<any>(initialFormData);
 
 // 3.显示modal框
 const isDialogVisible = ref(false);
@@ -113,10 +105,10 @@ function changeIsDialogVisible(rowData?: any) {
 }
 
 // 4.新建和修改
-const formRef = ref<InstanceType<typeof ElForm>>();
 const systemStore = useSystemStore();
 function handleConfirmClick() {
   isDialogVisible.value = false;
+  formData = { ...formData, ...props?.menuData };
   if (!isEdit.value) {
     // * 新建
     systemStore.createPageDataAction(props.modalConfig.pageName, formData);

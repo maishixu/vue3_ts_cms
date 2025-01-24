@@ -10,6 +10,8 @@ import {
 } from '@/service/main/system';
 import type { ISystem } from '@/types/main';
 import { defineStore } from 'pinia';
+import { useMainStore } from './main';
+import { localCache } from '@/utils/cache';
 
 export const useSystemStore = defineStore('system', {
   state: (): ISystem => ({
@@ -51,6 +53,9 @@ export const useSystemStore = defineStore('system', {
     /* 封装：增删改查 */
     // 1.查
     async postPageListAction(pageName: string, postData: any) {
+      if (localCache.getCache('isQuery') === 'false') {
+        return;
+      }
       const departmentData = await postPageListData(pageName, postData);
       this.pageList = departmentData.data.list;
       this.pageCount = departmentData.data.totalCount;
@@ -59,16 +64,31 @@ export const useSystemStore = defineStore('system', {
     async deletePageDataAction(pageName: string, id: number) {
       await deletePageData(pageName, id); // * 删除请求
       this.postPageListAction(pageName, { offset: 0, size: 20 }); // * 重新请求数据
+      // * 重新获取获取角色/部门/菜单列表
+      const mainStore = useMainStore();
+      await mainStore.postRoleListAction();
+      await mainStore.postDepartmentListAction();
+      await mainStore.postMenuListAction();
     },
     // 3.增
     async createPageDataAction(pageName: string, formData: any) {
       await createPageData(pageName, formData);
       this.postPageListAction(pageName, { offset: 0, size: 20 });
+      // * 重新获取获取角色/部门/菜单列表
+      const mainStore = useMainStore();
+      await mainStore.postRoleListAction();
+      await mainStore.postDepartmentListAction();
+      await mainStore.postMenuListAction();
     },
     // 4.改
     async editPageDataAction(pageName: string, id: number, formData: any) {
       await editPageData(pageName, id, formData);
       this.postPageListAction(pageName, { offset: 0, size: 20 });
+      // * 重新获取获取角色/部门/菜单列表
+      const mainStore = useMainStore();
+      await mainStore.postRoleListAction();
+      await mainStore.postDepartmentListAction();
+      await mainStore.postMenuListAction();
     },
   },
 });

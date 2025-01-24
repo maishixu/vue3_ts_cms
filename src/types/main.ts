@@ -12,6 +12,7 @@ interface userList {
 export interface IMain {
   roleList: any[];
   departmentList: any[];
+  menuList: any[];
 }
 export interface ISystem {
   userList: userList[];

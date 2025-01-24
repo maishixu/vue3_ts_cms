@@ -9,10 +9,11 @@ async function store(app: App<Element>) {
   // 1.每次刷新加载动态路由
   const loginStore = useLoginStore();
   loginStore.loadUserMenu();
-  // 2.每次刷新获取角色/部门列表
+  // 2.每次刷新获取角色/部门/菜单列表
   const mainStore = useMainStore();
   await mainStore.postRoleListAction();
   await mainStore.postDepartmentListAction();
+  await mainStore.postMenuListAction();
 }
 
 export default store;

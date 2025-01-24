@@ -17,6 +17,12 @@ const modalConfig = {
       label: '权限描述',
       placeholder: '请输入角色描述',
     },
+    {
+      type: 'custom',
+      prop: 'menuList',
+      label: '选择权限',
+      slotName: 'menuSlot',
+    },
   ],
 };
 export default modalConfig;

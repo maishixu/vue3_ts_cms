@@ -3,7 +3,7 @@
     <div class="head">
       <h3 class="title">{{ props.contentConfig.header.title }}</h3>
       <el-button
-        v-show="props.contentConfig.header?.btnTitle"
+        v-show="isCreate && props.contentConfig.header?.btnTitle"
         type="primary"
         plain
         class="create-btn"
@@ -28,6 +28,7 @@
             <el-table-column v-bind="item" align="center">
               <template #default="scope">
                 <el-button
+                  v-show="isUpdate"
                   class="edit-delete-btn"
                   icon="Edit"
                   text
@@ -37,6 +38,7 @@
                   >编辑</el-button
                 >
                 <el-button
+                  v-show="isDelete"
                   class="edit-delete-btn"
                   icon="Delete"
                   text
@@ -81,7 +83,9 @@
 
 <script setup lang="ts">
 import { useSystemStore } from '@/store/main/system';
+import { localCache } from '@/utils/cache';
 import { formatUTC } from '@/utils/format';
+import { mapMenuListToPermission } from '@/utils/map-route';
 import { storeToRefs } from 'pinia';
 import { computed, ref } from 'vue';
 // 1.接收父组件数据
@@ -93,10 +97,29 @@ interface IProps {
   };
 }
 const props = defineProps<IProps>();
+// 2.获取角色权限
+const permissions = mapMenuListToPermission(localCache.getCache('userMenu'));
+
+const isQuery = permissions.find((item) => item.includes(`${props.contentConfig.pageName}:query`));
+if (isQuery) {
+  localCache.setCache('isQuery', 'true');
+} else {
+  localCache.setCache('isQuery', 'false');
+}
+
+const isCreate = permissions.find((item) =>
+  item.includes(`${props.contentConfig.pageName}:create`),
+);
+const isDelete = permissions.find((item) =>
+  item.includes(`${props.contentConfig.pageName}:delete`),
+);
+const isUpdate = permissions.find((item) =>
+  item.includes(`${props.contentConfig.pageName}:update`),
+);
 // 2.获取页面数据
 const systemStore = useSystemStore();
-const { pageList, pageCount } = storeToRefs(systemStore); // 把userList做成响应式的，使异步请求的结果变化也能及时更新页面
-// * 根据用户选择构造请求参数
+const { pageList, pageCount } = storeToRefs(systemStore); // 把List做成响应式的，使异步请求的结果变化也能及时更新页面
+// * 请求参数
 const currentPage = ref(1);
 const pageSize = ref(20);
 const postData: any = computed(() => ({
@@ -105,16 +128,16 @@ const postData: any = computed(() => ({
 }));
 // * 首次请求
 systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
-// * 数量变化时发送请求
+// * 数量变化(请求)
 function handleSizeChange() {
   systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
-// * 页面变化时发送请求
+// * 页面变化(请求)
 function handleCurrentChange() {
   systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
 
-// 3.查询操作
+// 3.查询
 function handleSearch(formData: any) {
   currentPage.value = 1;
   const computedParams = {

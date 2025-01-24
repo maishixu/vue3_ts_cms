@@ -6,17 +6,17 @@ const localRouter = [
   // 系统总览
   {
     path: '/main/analysis/overview',
-    component: () => import('@/views/main/analysis/overview.vue'),
+    component: () => import('@/views/main/analysis/Overview.vue'),
     name: 'overview',
   },
   {
     path: '/main/analysis/dashboard',
-    component: () => import('@/views/main/analysis/dashboard.vue'),
+    component: () => import('@/views/main/analysis/Dashboard.vue'),
   },
   // 系统管理
   {
     path: '/main/system/user',
-    component: () => import('@/views/main/system/user.vue'),
+    component: () => import('@/views/main/system/User.vue'),
   },
   {
     path: '/main/system/department',
@@ -33,11 +33,11 @@ const localRouter = [
   // 商品中心
   {
     path: '/main/product/category',
-    component: () => import('@/views/main/product/category.vue'),
+    component: () => import('@/views/main/product/Category.vue'),
   },
   {
     path: '/main/product/goods',
-    component: () => import('@/views/main/product/goods.vue'),
+    component: () => import('@/views/main/product/Goods.vue'),
   },
   // 随便聊聊
   {
@@ -80,6 +80,7 @@ export function mapRoute(userMenu: any) {
     }
   }
 }
+
 // 3. 找到当前路径的子菜单
 export function mapPathToMenu(path: string, userMenu: any) {
   for (const item of userMenu) {
@@ -88,6 +89,7 @@ export function mapPathToMenu(path: string, userMenu: any) {
     }
   }
 }
+
 // 4. 找到当前路径的菜单/子菜单
 export function mapPathToFullMenu(path: string, userMenu: any) {
   for (const item of userMenu) {
@@ -95,4 +97,35 @@ export function mapPathToFullMenu(path: string, userMenu: any) {
       if (subItem.url === path) return [item, subItem];
     }
   }
+}
+
+// 5.获取菜单的id
+export function mapMenuListToIds(menuList: any[]) {
+  const ids: number[] = [];
+
+  function recurseGetId(menus: any[]) {
+    for (const item of menus) {
+      if (item.children) {
+        recurseGetId(item.children);
+      } else {
+        ids.push(item.id);
+      }
+    }
+  }
+  recurseGetId(menuList);
+  return ids;
+}
+
+// 6.根据用户菜单获取角色的权限
+export function mapMenuListToPermission(userList: any[]) {
+  const permissions: any[] = [];
+  function recurseGetPermission(userList: any[]) {
+    for (const item of userList) {
+      if (item.type === 3) {
+        permissions.push(item.permission);
+      } else [recurseGetPermission(item.children ?? [])];
+    }
+  }
+  recurseGetPermission(userList);
+  return permissions;
 }
