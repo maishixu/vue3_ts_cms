@@ -1,7 +1,5 @@
 import router from '@/router/index';
-import { useRoute } from 'vue-router';
-const route = useRoute();
-// 存储所有路由
+// 1.存储所有路由
 const localRouter = [
   // 系统总览
   {
@@ -49,9 +47,7 @@ const localRouter = [
     component: () => import('@/views/main/story/List.vue'),
   },
 ];
-// 存储第一个子菜单
-export let firstMenu: any = undefined;
-
+// 2.根据菜单路由映射
 export function mapRoute(userMenu: any) {
   // * 映射前先删除当前的/main路径下所有路由
   router.getRoutes().forEach((route) => {
@@ -63,19 +59,15 @@ export function mapRoute(userMenu: any) {
     }
   });
   for (const item of userMenu) {
-    // 0. 为根菜单路径匹配首个子菜单路由
+    // * 根菜单路径匹配第一个菜单路由
     if (!router.getRoutes().find((eRoute) => eRoute.path === item.url)) {
       router.addRoute('main', { path: item.url, redirect: item.children[0].url });
     }
+    // * 找到菜单匹配的所有路由
     for (const subItem of item.children) {
-      // 1. 找到菜单匹配的路由
       const routeItem = localRouter.find((iRoute) => iRoute.path === subItem.url);
       if (routeItem) {
         router.addRoute('main', routeItem);
-      }
-      // 2. 找到第一个子菜单
-      if (!firstMenu && subItem) {
-        firstMenu = subItem;
       }
     }
   }

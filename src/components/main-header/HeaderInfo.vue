@@ -49,8 +49,15 @@
 import { useRouter } from 'vue-router';
 import { LOGIN_TOKEN } from '@/global/constants';
 import { localCache } from '@/utils/cache';
+// import useLoginStore from '@/store/login/login';
+// import { storeToRefs } from 'pinia';
 
-// 退出登录功能
+// 1.获取用户信息
+// ：可动态设置用户名，这里先不设置
+// const loginStore = useLoginStore();
+// const { info } = storeToRefs(loginStore);
+
+// 2.退出登录功能
 const router = useRouter();
 function handleExitClick() {
   localCache.removeCache(LOGIN_TOKEN);
@@ -108,11 +115,4 @@ function handleExitClick() {
     }
   }
 }
-
-// .info {
-//   :global(.el-dropdown-menu__item) {
-//     line-height: 36px !important;
-//     padding: 6px 22px;
-//   }
-// }
 </style>

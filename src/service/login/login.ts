@@ -16,7 +16,6 @@ export function getUserInfoRequest(id: number) {
 }
 
 // 获取用户菜单请求
-
 export function getUserMenuRequest(id: number) {
   return myAxios.get({
     url: `/role/${id}/menu`,

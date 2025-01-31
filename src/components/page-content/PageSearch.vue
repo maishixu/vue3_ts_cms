@@ -40,14 +40,10 @@
         </template>
       </el-row>
       <!-- 2.重置/搜索按钮 -->
-      <el-row :gutter="20">
-        <el-col :span="23" class="col-btns" style="display: flex; justify-content: flex-end">
-          <div class="btns">
-            <el-button icon="Refresh" @click="handleResetClick">重置</el-button>
-            <el-button icon="Search" @click="handleSearchClick" type="primary">查询</el-button>
-          </div>
-        </el-col>
-      </el-row>
+      <div class="btns">
+        <el-button icon="Refresh" @click="handleResetClick">重置</el-button>
+        <el-button icon="Search" @click="handleSearchClick" type="primary">查询</el-button>
+      </div>
     </el-form>
   </div>
 </template>
@@ -55,28 +51,27 @@
 <script setup lang="ts">
 import type { ElForm } from 'element-plus';
 import { reactive, ref, defineEmits } from 'vue';
-// 接受父组件数据
+// 1.接受父组件数据
 interface IProps {
   searchConfig: {
     formItems: any[];
   };
 }
 const props = defineProps<IProps>();
-// 存储表单数据
+// 2.存储表单数据
 const initialFormData: any = {};
 for (const item of props.searchConfig.formItems) {
   initialFormData[item.prop] = '';
 }
 const formData = reactive<any>(initialFormData);
-// *与父组件通信
+
+// 3.查询/重置功能
 const emit = defineEmits(['resetClick', 'searchClick']);
-// 重置功能
 const formRef = ref<InstanceType<typeof ElForm>>();
 function handleResetClick() {
   formRef.value?.resetFields();
   emit('resetClick');
 }
-// 查询功能
 function handleSearchClick() {
   emit('searchClick', formData);
 }
@@ -89,18 +84,19 @@ function handleSearchClick() {
   border: 1px rgb(225, 225, 225) solid;
   .el-form {
     margin: 5px;
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 20px;
     .el-form-item {
       margin: 10px 12px;
     }
   }
 }
-.col-btns {
-  margin: 8px 0;
-  .btns {
-    margin-left: 10px;
-  }
+.btns {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-right: 14px;
   .el-button {
     height: 35px;
   }

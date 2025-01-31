@@ -1,31 +1,20 @@
 const contentConfig = {
   header: {
-    title: '部门列表',
-    btnTitle: '新建部门',
+    title: '类别列表',
+    btnTitle: '新建类别',
   },
+  pageName: 'category',
   dataList: [
     {
       type: 'index',
       label: '序号',
-      width: '60px',
+      width: '70px',
     },
     {
       type: 'normal',
       prop: 'name',
-      label: '部门名称',
-      width: '120px',
-    },
-    {
-      type: 'normal',
-      prop: 'leader',
-      label: '部门名称',
-      width: '120px',
-    },
-    {
-      type: 'normal',
-      prop: 'parentId',
-      label: '上级部门',
-      width: '120px',
+      label: '类别名称',
+      width: '170px',
     },
     {
       type: 'timer',
@@ -40,9 +29,8 @@ const contentConfig = {
     {
       type: 'handler',
       label: '操作',
-      width: '140px',
+      width: '170px',
     },
   ],
-  pageName: 'department',
 };
 export default contentConfig;

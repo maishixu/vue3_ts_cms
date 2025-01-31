@@ -53,9 +53,9 @@ export const useSystemStore = defineStore('system', {
     /* 封装：增删改查 */
     // 1.查
     async postPageListAction(pageName: string, postData: any) {
-      if (localCache.getCache('isQuery') === 'false') {
-        return;
-      }
+      // if (localCache.getCache('isQuery') === 'false') {
+      //   return;
+      // }
       const departmentData = await postPageListData(pageName, postData);
       this.pageList = departmentData.data.list;
       this.pageCount = departmentData.data.totalCount;

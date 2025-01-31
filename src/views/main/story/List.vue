@@ -1,7 +1,12 @@
 <template>
-  <div>list</div>
+  <div class="story">
+    <PageContent :content-config="contentConfig"> </PageContent>
+  </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import PageContent from '@/components/page-content/PageContent.vue';
+import contentConfig from '@/components/main-content/story/content.config';
+</script>
 
-<style></style>
+<style lang="less" scoped></style>

@@ -1,37 +1,74 @@
 <template>
-  <div class="user">
-    <UserSearch @searchClick="handleSearchClick" @resetClick="handleResetClick"></UserSearch>
-    <UserContent
-      @addUserClick="handleAddUserClick"
-      @editUserClick="handleEditUserClick"
+  <div class="department">
+    <PageSearch
+      @search-click="handleSearchClick"
+      @reset-click="handleResetClick"
+      :searchConfig="searchConfig"
+    ></PageSearch>
+    <PageContent
+      @add-data-click="handleAddClick"
+      @edit-data-click="handleEditClick"
+      :contentConfig="contentConfig"
       ref="contentRef"
-    ></UserContent>
-    <UserModal ref="modalRef"></UserModal>
+    >
+      <template #enableSlot="scope">
+        <el-button :type="scope.row.enable ? 'success' : 'danger'" plain size="small">
+          {{ scope.row.enable ? '启用' : '禁用' }}
+        </el-button>
+      </template>
+    </PageContent>
+    <PageModal :modalConfig="modalConfigRef" ref="modalRef"></PageModal>
   </div>
 </template>
 
 <script setup lang="ts">
-import UserSearch from '@/components/main-content/system/user/UserSearch.vue';
-import UserContent from '@/components/main-content/system/user/UserContent.vue';
-import UserModal from '@/components/main-content/system/user/UserModal.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
-// 1.查询
-const contentRef = ref<InstanceType<typeof UserContent>>();
+import PageSearch from '@/components/page-content/PageSearch.vue';
+import PageContent from '@/components/page-content/PageContent.vue';
+import PageModal from '@/components/page-content/PageModal.vue';
+
+import searchConfig from '@/components/main-content/system/user/search.config';
+import contentConfig from '@/components/main-content/system/user/content.config';
+import modalConfig from '@/components/main-content/system/user/modal.config';
+
+import { useMainStore } from '@/store/main/main';
+
+// 1.定义数据
+const modalConfigRef = computed(() => {
+  const mainStore = useMainStore();
+  const departmentList = mainStore.departmentList.map((item) => {
+    return { label: item.name, value: item.id };
+  });
+  const roleList = mainStore.roleList.map((item) => {
+    return { label: item.name, value: item.id };
+  });
+  modalConfig.formItems.forEach((item) => {
+    if (item.prop === 'roleId') {
+      item.options?.push(...roleList);
+    }
+    if (item.prop === 'departmentId') {
+      item.options?.push(...departmentList);
+    }
+  });
+  return modalConfig;
+});
+// 2.查询
+const contentRef = ref<InstanceType<typeof PageContent>>();
 function handleSearchClick(formData: any) {
   contentRef.value?.handleSearch(formData);
 }
-// 2.重置
+// 3.重置
 function handleResetClick() {
   contentRef.value?.handleReset();
 }
-// 3.新建
-const modalRef = ref<InstanceType<typeof UserModal>>();
-function handleAddUserClick() {
+// 4.新建
+const modalRef = ref<InstanceType<typeof PageModal>>();
+function handleAddClick() {
   modalRef.value?.changeIsDialogVisible();
 }
-// 4.编辑
-function handleEditUserClick(userData: any) {
+// 5.编辑
+function handleEditClick(userData: any) {
   modalRef.value?.changeIsDialogVisible(userData);
 }
 </script>

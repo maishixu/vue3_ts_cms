@@ -17,7 +17,7 @@
         <template v-for="item in props.contentConfig.dataList">
           <!-- 1.时间列 -->
           <template v-if="item.type === 'timer'">
-            <el-table-column v-bind="item" align="center">
+            <el-table-column v-bind="item" align="center" show-overflow-tooltip>
               <template #default="scope">
                 {{ formatUTC(scope.row[item.prop]) }}
               </template>
@@ -60,7 +60,7 @@
           </template>
           <!-- 4.普通列 -->
           <template v-else>
-            <el-table-column v-bind="item" align="center" />
+            <el-table-column v-bind="item" align="center" show-overflow-tooltip />
           </template>
         </template>
       </el-table>
@@ -116,7 +116,8 @@ const isDelete = permissions.find((item) =>
 const isUpdate = permissions.find((item) =>
   item.includes(`${props.contentConfig.pageName}:update`),
 );
-// 2.获取页面数据
+
+// 3.获取页面数据
 const systemStore = useSystemStore();
 const { pageList, pageCount } = storeToRefs(systemStore); // 把List做成响应式的，使异步请求的结果变化也能及时更新页面
 // * 请求参数
@@ -137,7 +138,7 @@ function handleCurrentChange() {
   systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
 
-// 3.查询
+// 4.查询
 function handleSearch(formData: any) {
   currentPage.value = 1;
   const computedParams = {
@@ -147,21 +148,21 @@ function handleSearch(formData: any) {
   systemStore.postPageListAction(props.contentConfig.pageName, computedParams);
 }
 
-// 4.重置
+// 5.重置
 function handleReset() {
   currentPage.value = 1;
   systemStore.postPageListAction(props.contentConfig.pageName, postData.value);
 }
-// 5.删除
+// 6.删除
 function deleteClick(id: number) {
   systemStore.deletePageDataAction(props.contentConfig.pageName, id);
 }
-// 6.新建
+// 7.新建
 const emit = defineEmits(['addDataClick', 'editDataClick']);
 function handleAddDataClick() {
   emit('addDataClick');
 }
-// 7.编辑
+// 8.编辑
 function handleEditClick(rowData: any) {
   emit('editDataClick', rowData);
 }

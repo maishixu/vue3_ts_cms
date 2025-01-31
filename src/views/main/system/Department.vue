@@ -19,9 +19,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-import PageSearch from '@/components/main-content/system/department/PageSearch.vue';
-import PageContent from '@/components/main-content/system/department/PageContent.vue';
-import PageModal from '@/components/main-content/system/department/PageModal.vue';
+import PageSearch from '@/components/page-content/PageSearch.vue';
+import PageContent from '@/components/page-content/PageContent.vue';
+import PageModal from '@/components/page-content/PageModal.vue';
 
 import searchConfig from '@/components/main-content/system/department/config/search.config';
 import contentConfig from '@/components/main-content/system/department/config/content.config';

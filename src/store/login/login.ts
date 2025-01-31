@@ -19,7 +19,7 @@ const useLoginStore = defineStore('login', {
     menu: localCache.getCache('userMenu') ?? {},
   }),
   actions: {
-    // **点击登录按钮后发生的动作
+    // ** 点击登录按钮后发生的动作
     async loginAccountAction(account: IAccount) {
       // 1.账号登录, 获取token等信息
       const loginResult = await accountLoginRequest(account);
@@ -50,7 +50,7 @@ const useLoginStore = defineStore('login', {
       await mainStore.postRoleListAction();
       await mainStore.postDepartmentListAction();
     },
-    // **根据用户菜单的路由映射
+    // ** 根据用户菜单的路由映射
     loadUserMenu() {
       const userMenu = localCache.getCache('userMenu');
       if (userMenu) {

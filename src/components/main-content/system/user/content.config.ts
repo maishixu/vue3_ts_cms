@@ -1,31 +1,39 @@
 const contentConfig = {
   header: {
-    title: '部门列表',
-    btnTitle: '新建部门',
+    title: '用户列表',
+    btnTitle: '新建用户',
   },
+  pageName: 'users',
   dataList: [
     {
       type: 'index',
       label: '序号',
-      width: '60px',
+      width: '55px',
     },
     {
       type: 'normal',
       prop: 'name',
-      label: '部门名称',
-      width: '120px',
+      label: '用户名',
+      width: '108px',
     },
     {
       type: 'normal',
-      prop: 'leader',
-      label: '部门名称',
-      width: '120px',
+      prop: 'realname',
+      label: '真实姓名',
+      width: '108px',
     },
     {
       type: 'normal',
-      prop: 'parentId',
-      label: '上级部门',
-      width: '120px',
+      prop: 'cellphone',
+      label: '电话号码',
+      width: '125px',
+    },
+    {
+      type: 'custom',
+      prop: 'enable',
+      label: '状态',
+      width: '80px',
+      slotName: 'enableSlot',
     },
     {
       type: 'timer',
@@ -40,9 +48,8 @@ const contentConfig = {
     {
       type: 'handler',
       label: '操作',
-      width: '140px',
+      width: '135px',
     },
   ],
-  pageName: 'department',
 };
 export default contentConfig;

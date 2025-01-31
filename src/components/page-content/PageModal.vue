@@ -9,10 +9,24 @@
       <div class="form">
         <el-form :model="formData">
           <template v-for="item in modalConfig.formItems" :key="item.prop">
-            <el-form-item :label="item.label" :prop="item.prop">
+            <el-form-item
+              label-width="70px"
+              label-position="left"
+              :label="item.label"
+              :prop="item.prop"
+              v-show="!isEdit || (isEdit && item.type !== 'password')"
+            >
               <!-- 1.文本输入 -->
               <template v-if="item.type === 'input'">
                 <el-input v-model="formData[item.prop]" :placeholder="item.placeholder" />
+              </template>
+              <!-- 2.密码输入 -->
+              <template v-if="item.type === 'password'">
+                <el-input
+                  v-model="formData[item.prop]"
+                  :placeholder="item.placeholder"
+                  show-password
+                />
               </template>
               <!-- 2.时间输入 -->
               <template v-if="item.type === 'date-picker'">
@@ -57,8 +71,7 @@
 
 <script setup lang="ts">
 import { useSystemStore } from '@/store/main/system';
-import type { ElForm } from 'element-plus';
-import { computed, reactive, ref, toRaw } from 'vue';
+import { reactive, ref, toRaw } from 'vue';
 // 1.接收数据
 interface IProps {
   modalConfig: {
@@ -78,7 +91,7 @@ const initialFormData: any = {};
 for (const item of props.modalConfig.formItems) {
   initialFormData[item.prop] = '';
 }
-let formData = reactive<any>(initialFormData);
+const formData = reactive<any>(initialFormData);
 
 // 3.显示modal框
 const isDialogVisible = ref(false);
@@ -108,13 +121,13 @@ function changeIsDialogVisible(rowData?: any) {
 const systemStore = useSystemStore();
 function handleConfirmClick() {
   isDialogVisible.value = false;
-  formData = { ...formData, ...props?.menuData };
+  const confirmData = { ...formData, ...props?.menuData };
   if (!isEdit.value) {
     // * 新建
-    systemStore.createPageDataAction(props.modalConfig.pageName, formData);
+    systemStore.createPageDataAction(props.modalConfig.pageName, confirmData);
   } else {
     // * 修改
-    systemStore.editPageDataAction(props.modalConfig.pageName, rowId.value, formData);
+    systemStore.editPageDataAction(props.modalConfig.pageName, rowId.value, confirmData);
   }
 }
 

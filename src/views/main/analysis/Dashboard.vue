@@ -11,8 +11,8 @@
     <div class="center">
       <!-- 2.中间图表 -->
       <el-row :gutter="10">
-        <el-col :span="10"> <PieEChart :pieOption="showGoodsCategoryCount"></PieEChart> </el-col>
         <el-col :span="14"> <MapEChart :mapOption="showGoodsAddressSale"></MapEChart></el-col>
+        <el-col :span="10"> <PieEChart :pieOption="showGoodsCategoryCount"></PieEChart> </el-col>
       </el-row>
     </div>
     <div class="footer">

@@ -1,19 +1,9 @@
 import axios from 'axios';
+import type { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 import type { AxiosInstance } from 'axios';
 import type { HYRequestConfig } from './type';
 
 // 拦截器: 蒙版Loading/token/修改配置
-
-/**
- * 两个难点:
- *  1.拦截器进行精细控制
- *    > 全局拦截器
- *    > 实例拦截器
- *    > 单次请求拦截器
- *
- *  2.响应结果的类型处理(泛型)
- */
-
 class HYRequest {
   instance: AxiosInstance;
 
@@ -23,7 +13,7 @@ class HYRequest {
 
     // 每个instance实例都添加拦截器
     this.instance.interceptors.request.use(
-      (config) => {
+      (config: InternalAxiosRequestConfig) => {
         // loading/token
         return config;
       },
@@ -42,7 +32,9 @@ class HYRequest {
 
     // 针对特定的hyRequest实例添加拦截器
     this.instance.interceptors.request.use(
-      config.interceptors?.requestSuccessFn,
+      config.interceptors?.requestSuccessFn as (
+        config: InternalAxiosRequestConfig,
+      ) => InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig>,
       config.interceptors?.requestFailureFn,
     );
     this.instance.interceptors.response.use(
@@ -64,7 +56,7 @@ class HYRequest {
       this.instance
         .request<any, T>(config)
         .then((res) => {
-          // 单词响应的成功拦截处理
+          // 单次响应的成功拦截处理
           if (config.interceptors?.responseSuccessFn) {
             res = config.interceptors.responseSuccessFn(res);
           }
